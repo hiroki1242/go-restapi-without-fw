@@ -51,6 +51,14 @@ func createMovie(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// idが重複しないように修正
+	for _, movie := range movies {
+		if movie.Id == newMovie.Id {
+			http.Error(w, "Id already exists.", http.StatusBadRequest)
+			return
+		}
+	}
+
 	movies = append(movies, newMovie)
 
 	w.WriteHeader(http.StatusCreated)
@@ -67,9 +75,16 @@ func updateMovie(w http.ResponseWriter, r *http.Request) {
 
 	var movieInfo Movie
 
+	// bodyのjsonをデコード
 	err = json.NewDecoder(r.Body).Decode(&movieInfo)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	// jsonのidとパスパラメーターのidの整合性を確認
+	if movieId != movieInfo.Id {
+		http.Error(w, "Invalid Id", http.StatusBadRequest)
 		return
 	}
 
