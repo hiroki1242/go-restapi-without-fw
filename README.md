@@ -28,5 +28,5 @@ curl -X PUT -H "Content-Type: application/json" -d '{"id": 4, "name": "new movie
 curl -X DELETE localhost:8080/movies/4
 ```
 
-- Echoを使用して作成したver
+- Echoを使用して作成したver.<br>
 https://github.com/hiroki1242/restapi-with-echo/tree/main
